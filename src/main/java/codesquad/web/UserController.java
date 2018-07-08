@@ -20,25 +20,48 @@ public class UserController {
         return "/user/profile";
     }
 
-    @PostMapping("/users")  // form에서 action
+    @PostMapping("/users")
     public String create(User user) {
         users.add(user);
         return "redirect:/users";
     }
 
-    @GetMapping("/users")  // form에서 action
+    @GetMapping("/users")
     public String list(Model model) {
         model.addAttribute("users", users);
+        System.out.println("3 : " + users.size());
         return "/user/list";
     }
 
-//    @PostMapping("/users")  // form에서 action
-//    public String create(String userId,
-//                         String password,
-//                         String name,
-//                         String email, Model model) {
-//        users.add(new User(userId, password, name, email));
-//        model.addAttribute("users", users);
-//        return "/user/list";
-//    }
+
+    @GetMapping("/users/{id}/form")
+    public String edit(@PathVariable String id, Model model) {
+        model.addAttribute("user", findUser(id));
+        model.addAttribute("id", id);
+        return "/user/updateForm";
+    }
+
+    @PostMapping("/users/{id}/update")
+    public String update(@PathVariable String id, User modifiedUser, String oldPassword) {
+        System.out.println("1 : " + users.size());
+        User user = findUser(id);
+
+        if (user == null) return "redirect:/users";
+
+        if (user.checkPassword(oldPassword)) {
+            user.setPassword(modifiedUser.getPassword());
+            user.setName(modifiedUser.getName());
+            user.setEmail(modifiedUser.getEmail());
+        }
+
+        return "redirect:/users";
+    }
+
+    private User findUser(String id) {
+        for (User user : users) {
+            if(user.getUserId().equals(id))
+                return user;
+        }
+        return null;
+    }
 }

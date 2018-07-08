@@ -12,12 +12,12 @@ import java.util.*;
 
 @Controller
 public class QuestionController {
-    List<Question> questionList = new ArrayList<>();
+    public static List<Question> questionList = new ArrayList<>();
 
     @GetMapping("/questions/{index}")
     public String show(@PathVariable int index, Model model) {
-        model.addAttribute("question", questionList.get(index));
-        return "/question/show";
+        model.addAttribute("question", questionList.get(index - 1));
+        return "/qna/show";
     }
 
     @PostMapping("/questions")
@@ -31,21 +31,8 @@ public class QuestionController {
     }
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String show(Model model) {
         model.addAttribute("questionList", questionList);
-        return "/question/index";
+        return "index";
     }
-
-
-//    @PostMapping("/users")  // form에서 action
-//    public String create(User user) {
-//        users.add(user);
-//        return "redirect:/users";
-//    }
-//
-//    @GetMapping("/users")  // form에서 action
-//    public String list(Model model) {
-//        model.addAttribute("users", users);
-//        return "/user/list";
-//    }
 }
