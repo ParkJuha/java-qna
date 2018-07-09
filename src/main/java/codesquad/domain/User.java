@@ -54,6 +54,16 @@ public class User {
         return this.password.equals(oldPassword);
     }
 
+    public User update(User modifiedUser, String oldPassword) {
+        if (!checkPassword(oldPassword)) return this;
+
+        setPassword(modifiedUser.getPassword());
+        setName(modifiedUser.getName());
+        setEmail(modifiedUser.getEmail());
+
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -31,7 +31,7 @@ public class QuestionController {
     }
 
     @GetMapping("/")
-    public String show(Model model) {
+    public String list(Model model) {
         model.addAttribute("questionList", questionList);
         return "index";
     }

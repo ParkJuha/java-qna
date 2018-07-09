@@ -9,19 +9,6 @@ public class Question {
     public Question() {
     }
 
-    public Question(String writer, String title, String contents) {
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-    }
-
-    public Question(String writer, String title, String contents, String time) {
-        this.writer = writer;
-        this.title = title;
-        this.contents = contents;
-        this.time = time;
-    }
-
     public void setWriter(String writer) {
         this.writer = writer;
     }

@@ -29,7 +29,6 @@ public class UserController {
     @GetMapping("/users")
     public String list(Model model) {
         model.addAttribute("users", users);
-        System.out.println("3 : " + users.size());
         return "/user/list";
     }
 
@@ -43,17 +42,12 @@ public class UserController {
 
     @PostMapping("/users/{id}/update")
     public String update(@PathVariable String id, User modifiedUser, String oldPassword) {
-        System.out.println("1 : " + users.size());
         User user = findUser(id);
 
-        if (user == null) return "redirect:/users";
+        if (user == null)
+            return "redirect:/users";
 
-        if (user.checkPassword(oldPassword)) {
-            user.setPassword(modifiedUser.getPassword());
-            user.setName(modifiedUser.getName());
-            user.setEmail(modifiedUser.getEmail());
-        }
-
+        user.update(modifiedUser, oldPassword);
         return "redirect:/users";
     }
 
