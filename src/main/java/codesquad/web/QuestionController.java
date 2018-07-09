@@ -25,30 +25,34 @@ public class QuestionController {
 
     @GetMapping("/{index}")
     public String show(@PathVariable Long index, Model model) {
-        model.addAttribute("question", questionRepository.findById(index).get());
+        model.addAttribute("question", getQuestionByIndex(index));
         return "/qna/show";
     }
 
     @GetMapping("/{id}/form")
     public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("question", questionRepository.findById(id).get());
+        model.addAttribute("question", getQuestionByIndex(id));
         return "/qna/updateForm";
     }
 
     @PutMapping("/{id}/update")
     public String update(@PathVariable Long id, Question modifiedQuestion) {
-        Question question = questionRepository.findById(id).get();
+        Question question = getQuestionByIndex(id);
         question.update(modifiedQuestion);
         questionRepository.save(question);
 
         return "redirect:/questions/" + id;
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
-        Question question = questionRepository.findById(id).get();
+        Question question = getQuestionByIndex(id);
         questionRepository.delete(question);
 
         return "redirect:/";
+    }
+
+    private Question getQuestionByIndex(Long index) {
+        return questionRepository.findById(index).orElseThrow(NullPointerException::new);
     }
 }

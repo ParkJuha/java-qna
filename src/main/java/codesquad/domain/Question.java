@@ -3,6 +3,7 @@ package codesquad.domain;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class Question {
@@ -14,7 +15,7 @@ public class Question {
     private String writer;
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
+    @Lob
     private String contents;
     @Column(nullable = false)
     private String time;
@@ -58,6 +59,10 @@ public class Question {
         this.time = format.format(new Date(currentTime));
     }
 
+    public void updateTime(String time) {
+        this.time = time;
+    }
+
     public String getWriter() {
         return writer;
     }
@@ -76,5 +81,22 @@ public class Question {
         setContents(modifiedQuestion.getContents());
 
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return Objects.equals(id, question.id) &&
+                Objects.equals(writer, question.writer) &&
+                Objects.equals(title, question.title) &&
+                Objects.equals(contents, question.contents) &&
+                Objects.equals(time, question.time);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, writer, title, contents, time);
     }
 }
